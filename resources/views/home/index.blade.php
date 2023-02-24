@@ -64,15 +64,10 @@
     </header><!-- End Header -->
 
     <!-- ======= Hero Section ======= -->
-    <section id="hero" class="d-flex align-items-center" style="background-color: #DFE8CC">
+    <section id="hero" class="d-flex align-items-center justify-content-center" style="background-color: #DFE8CC">
         <div class="row mx-4" data-aos="zoom-out" data-aos-delay="100">
             <div class="col-md-6 col-sm-12 align-self-center">
                 <h1>Welcome to <span>Futami</span></h1>
-                <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi quasi, sit suscipit autem facilis
-                    vitae.</h2>
-                <div class="d-flex">
-                    <a href="/scanner" class="btn-get-started scrollto">Scan Material</a>
-                </div>
             </div>
             <div class="col-md-6 col-sm-12 align-self-center">
                 <img src="assets/img/qrcodeppl.png" class="img-fluid" alt="">

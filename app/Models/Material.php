@@ -15,8 +15,7 @@ class Material extends Model
         $query->when($filters['search'] ?? false, function($query, $search){
             return $query->where('nama','like','%'.$search.'%')
                         ->orWhere('no_material','like','%'.$search.'%')
-                        ->orWhere('alat_ukur','like','%'.$search.'%')
-                        ->orWhere('tempat_penyimpanan','like','%'.$search.'%');
+                        ->orWhere('lokasi','like','%'.$search.'%');
         }); 
 
     }
@@ -27,5 +26,10 @@ class Material extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function satuan()
+    {
+        return $this->belongsTo(Satuan::class);
     }
 }

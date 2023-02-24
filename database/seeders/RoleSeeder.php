@@ -15,6 +15,8 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
+        $role = new Role;
+
         Role::create([
             'name'=>'user'
         ]);

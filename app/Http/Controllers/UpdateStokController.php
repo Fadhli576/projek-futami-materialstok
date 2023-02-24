@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Material;
 use App\Models\UpdateStok;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -59,29 +60,28 @@ class UpdateStokController extends Controller
      */
     public function edit($no_material)
     {
-        $materials = UpdateStok::join('materials','update_stoks.stok_id','=','materials.id')
-                                ->where('no_material', $no_material)
-                                ->select('update_stoks.id as update_stok_id','update_stoks.stok_id as stok_id','update_stoks.jumlah_stok as jumlah_stok','update_stoks.user_id as user_id','update_stoks.status as status','update_stoks.created_at as created_at_update','materials.*')
-                                ->latest('created_at_update')->get();
+        $material = Material::where('no_material', $no_material)->first();
+        // $materials = UpdateStok::join('materials','update_stoks.stok_id','=','materials.id')
+        //                         ->where('no_material', $no_material)
+        //                         ->select('update_stoks.id as update_stok_id','update_stoks.stok_id as stok_id','update_stoks.jumlah_stok as jumlah_stok','update_stoks.user_id as user_id','update_stoks.status as status','update_stoks.created_at as created_at_update','materials.*')
+        //                         ->latest('created_at_update')->get();
         // $materials = Material::where('no_material', $no_material)->join('update_stoks','materials.id','=','update_stoks.stok_id')->orderBy('no_material','asc')->get();
         // $materiael = UpdateStok::join('materials','update_stoks.stok_id','=','materials.id')
         //                         ->where('no_material', $no_material)
         //                         ->select('update_stoks.id as update_stok_id','update_stoks.stok_id as stok_id','update_stoks.jumlah_stok as jumlah_stok','update_stoks.user_id as user_id','update_stoks.status as status','update_stoks.created_at as created_at_update','materials.*')
         //                         ->latest('created_at_update')->first();
         
-        $stokIn =  UpdateStok::join('materials','update_stoks.stok_id','=','materials.id')
+        $stokIn =  UpdateStok::join('materials','update_stoks.stok_id','=','materials.id')->join('users','update_stoks.user_id','users.id')
                                 ->where([['no_material', $no_material],['status','in']])
-                                ->select('update_stoks.id as update_stok_id','update_stoks.stok_id as stok_id','update_stoks.jumlah_stok as jumlah_stok','update_stoks.user_id as user_id','update_stoks.status as status','update_stoks.created_at as created_at_update','materials.*')
+                                ->select('update_stoks.id as update_stok_id','update_stoks.stok_id as stok_id','update_stoks.jumlah_stok as jumlah_stok','users.name as user_name','update_stoks.status as status','update_stoks.created_at as created_at_update', 'materials.*')
                                 ->get();
         
-        $stokOut =  UpdateStok::join('materials','update_stoks.stok_id','=','materials.id')
+        $stokOut =  UpdateStok::join('materials','update_stoks.stok_id','=','materials.id')->join('users','update_stoks.user_id','users.id')
                                 ->where([['no_material', $no_material],['status','out']])
-                                ->select('update_stoks.id as update_stok_id','update_stoks.stok_id as stok_id','update_stoks.jumlah_stok as jumlah_stok','update_stoks.user_id as user_id','update_stoks.status as status','update_stoks.created_at as created_at_update','materials.*')
+                                ->select('update_stoks.id as update_stok_id','update_stoks.stok_id as stok_id','update_stoks.jumlah_stok as jumlah_stok','users.name as user_name','update_stoks.status as status','update_stoks.created_at as created_at_update', 'materials.*')
                                 ->get();
-        // $stokIn = UpdateStok::where('status','in')->get();
-        // $stokOut = UpdateStok::where('status','out')->get();
 
-        return view('dashboard.data_material.update-stok', compact('materials','stokIn','stokOut','no_material'));
+        return view('dashboard.data_material.update-stok', compact('material','stokIn','stokOut','no_material'));
     }
 
     /**
@@ -104,23 +104,16 @@ class UpdateStokController extends Controller
             'stok_id'=>$materiala->id,
             'jumlah_stok'=>$request->jumlah_stok,
             'user_id'=>Auth::user()->id,
-            'status'=>$request->status
+            'status'=>$request->status,
+            'keterangan'=>$request->keterangan,
+            'metode_scan'=>'manual',
+            'tanggal_scan'=> Carbon::now()->format('Y-m-d')
         ]); 
 
         $material = UpdateStok::join('materials','update_stoks.stok_id','=','materials.id')
                                 ->where('no_material', $no_material)
                                 ->select('update_stoks.id as update_stok_id','update_stoks.stok_id as stok_id','update_stoks.jumlah_stok as jumlah_stok','update_stoks.user_id as user_id','update_stoks.status as status','update_stoks.created_at as created_at_update','materials.*')
                                 ->latest('created_at_update')->first();
-
-        $stokIn =  UpdateStok::join('materials','update_stoks.stok_id','=','materials.id')
-                            ->where([['no_material', $no_material],['status','in']])
-                            ->select('update_stoks.id as update_stok_id','update_stoks.stok_id as stok_id','update_stoks.jumlah_stok as jumlah_stok','update_stoks.user_id as user_id','update_stoks.status as status','update_stoks.created_at as created_at_update','materials.*')
-                            ->get();
-
-        $stokOut =  UpdateStok::join('materials','update_stoks.stok_id','=','materials.id')
-                            ->where([['no_material', $no_material],['status','out']])
-                            ->select('update_stoks.id as update_stok_id','update_stoks.stok_id as stok_id','update_stoks.jumlah_stok as jumlah_stok','update_stoks.user_id as user_id','update_stoks.status as status','update_stoks.created_at as created_at_update','materials.*')
-                            ->get();
 
         $stokMasuk =  UpdateStok::join('materials','update_stoks.stok_id','=','materials.id')
                             ->where([['no_material', $no_material],['status','in']])

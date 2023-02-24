@@ -13,15 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('update_stoks', function (Blueprint $table) {
+        Schema::create('satuans', function (Blueprint $table) {
             $table->id();
-            $table->string('stok_id');
-            $table->string('jumlah_stok');
-            $table->string('user_id');
-            $table->enum('status',['in','out'])->nullable();
+            $table->string('name');
             $table->string('keterangan')->nullable();
-            $table->enum('metode_scan',['manual','langsung']);
-            $table->date('tanggal_scan');
             $table->timestamps();
         });
     }
@@ -33,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('update_stoks');
+        Schema::dropIfExists('satuans');
     }
 };

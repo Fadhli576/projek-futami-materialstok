@@ -2,8 +2,7 @@
 
 namespace App\Exports;
 
-
-use App\Models\Material;
+use App\Models\UpdateStok;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -11,30 +10,28 @@ use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 
-
-
-class MaterialsExport implements FromCollection, WithHeadings, ShouldAutoSize, WithStyles
+class UpdateStokExport implements FromCollection, WithHeadings, ShouldAutoSize, WithStyles
 {
     /**
     * @return \Illuminate\Support\Collection
     */
     public function collection()
     {
-        // return Material::select('id','no_material','nama','satuan_id','lokasi','jumlah','deskripsi')->get();
-
-        return Material::join('satuans', 'materials.satuan_id','=','satuans.id')->select('materials.id','materials.no_material','materials.nama','satuans.name','materials.lokasi','materials.jumlah','materials.deskripsi')->get();
+        return  UpdateStok::join('materials','update_stoks.stok_id','=','materials.id')->join('users','update_stoks.user_id','users.id')->where([['status','out']])
+        ->select('materials.no_material as no_material','materials.nama as nama_material','update_stoks.jumlah_stok as jumlah_stok','users.name as user_name','update_stoks.status as status','update_stoks.created_at as created_at_update', 'update_stoks.metode_scan as metode_scan')
+        ->get();
     }
 
     public function headings(): array
     {
         return [
-            'No',
             'Material',
             'Material Description',
-            'BUn',
-            'Lokasi',
-            'Unrestricted',
-            'Deskripsi',
+            'Jumlah Stok',
+            'Nama User',
+            'Status',
+            'Tanggal',
+            'Metode Scan'
         ];
     }
 

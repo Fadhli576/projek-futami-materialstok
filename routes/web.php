@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UpdateStokController;
@@ -42,8 +43,7 @@ Route::middleware(['Login', 'checkRole:super admin'])->group(function () {
 
 Route::middleware('Login')->group(function () {
     Route::get('/logout', [LoginController::class, 'logout']);
-    Route::get('/dashboard', [MaterialController::class, 'indexDashboard'])->name('index');
-
+    Route::get('/dashboard', [MaterialController::class, 'indexDashboard'])->name('index-dashboard');
     Route::get('/dashboard/material-data', [MaterialController::class, 'index'])->name('dashboard.index');
 
     Route::get('/dashboard/edit-material/{no_material}', [MaterialController::class, 'edit'])->name('edit-material');
@@ -53,14 +53,30 @@ Route::middleware('Login')->group(function () {
 
     Route::get('/dashboard/update-stok/{no_material}', [UpdateStokController::class, 'edit'])->name('update-stok');
     Route::put('/dashboard/update-stok-proses/{no_material}', [UpdateStokController::class, 'update'])->name('update-stoki');
+    Route::get('/dashboard/scan-langsung', [MaterialController::class, 'scanLangsungView'])->name('scan-langsung-view');
+    Route::post('/dashboard/scan-langsung/post', [MaterialController::class, 'scanLangsung'])->name('scan-langsung');
+
+    Route::get('/dashboard/scan-manual', [MaterialController::class, 'scanManualView'])->name('scan-manual-view');
 });
 
 Route::middleware(['Login', 'checkRole:super admin,admin'])->group(function () {
     Route::post('/store', [MaterialController::class, 'store'])->name('dashboard.store');
     Route::delete('/dashboard/delete-material/{material}', [MaterialController::class, 'destroy'])->name('delete-material');
     Route::get('/dashboard/material-export', [MaterialController::class, 'materialExport'])->name('material-export');
+    Route::get('/dashboard/update-stok-export', [MaterialController::class, 'updateStokExport'])->name('update-stok-export');
     Route::get('/dashboard/print', [MaterialController::class, 'printMaterial'])->name('print-material');
+    Route::get('/dashboard/stok-langsung', [MaterialController::class, 'indexDashboardLangsung'])->name('dashboard-langsung');
+
+    Route::get('/dashboard/satuan-data', [SatuanController::class, 'index'])->name('satuan-index');
+    Route::post('/dashboard/satuan-store', [SatuanController::class, 'store'])->name('satuan-store');
+    Route::get('/dashboard/edit-satuan/{satuan}', [SatuanController::class, 'edit'])->name('satuan-edit');
+    Route::put('/dashboard/update-satuan/{satuan}', [SatuanController::class, 'update'])->name('satuan-update');
+    Route::delete('/dashboard/delete-satuan/{satuan}', [SatuanController::class, 'destroy'])->name('satuan-delete');
+
+    Route::put('/dashboard/tambah-keterangan/{id}', [MaterialController::class, 'tambahKeterangan'])->name('tambah-keterangan');
+
 });
+
 
 
 

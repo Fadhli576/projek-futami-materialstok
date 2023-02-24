@@ -1,44 +1,41 @@
 @extends('dashboard.layout')
 
 @section('content')
-    <div class="card p-4 shadow">
-        <h4><strong>Data Material</strong></h4>
+    <div class="card p-2 p-md-4 shadow">
+        <h4><a href="/dashboard/material-data" class="btn d-md-none"><i class="fa-solid fa-arrow-left"></i>
+            </a><strong>Data Material</strong></h4>
         <table
             class="text-center justify-content-center align-items-center table table-hover border shadow table-responsive-sm fs-6"
             style="background-color: white">
             <thead class="table text-white" style="background-color: #1CC88A">
                 <td>No</td>
-                <td>No Stok</td>
-                <td>Nama</td>
-                <td>Alat Ukur</td>
-                <td>Jumlah</td>
-                <td>Tempat</td>
+                <td>Material</td>
+                <td>Material Description</td>
+                <td>BUn</td>
+                <td>Unrestricted</td>
+                <td>Lokasi Rak</td>
                 <td>Deskripsi</td>
             </thead>
-            @forelse ($materials as $material)
                 <tr class="justify-content-center align-self-center">
-                    <td class="align-middle">{{ $loop->iteration }}</td>
+                    <td class="align-middle">{{ $material->id }}</td>
                     <td class="align-middle">{{ $material->no_material }}</td>
                     <td class="align-middle">{{ $material->nama }}</td>
-                    <td class="align-middle">{{ $material->alat_ukur }}</td>
-                    <td class="align-middle">{{ $material->jumlah_stok }}</td>
-                    <td class="align-middle">{{ $material->tempat_penyimpanan }}</td>
-                    <td class="align-middle">{{ $material->deskripsi }}</td>
+                    <td class="align-middle">{{ $material->satuan->name }}</td>
+                    <td class="align-middle">{{ $material->jumlah }}</td>
+                    <td class="align-middle">{{ $material->lokasi == null ? 'Kosong' : $material->lokasi }}</td>
+                    <td class="align-middle">{{ $material->deskripsi == null ? 'Kosong' : $material->deskripsi }}</td>
                 </tr>
-            @empty
-                <td colspan="7">Belum ada data</td>
-            @endforelse
         </table>
 
         <form action="{{ route('update-stoki', $no_material) }}" method="POST" class="row">
             @csrf
             @method('PUT')
-            <div class="col-6" style="background-color: white;">
-                <table
-                    class="text-center justify-content-center align-items-center table table-hover border shadow table-responsive-sm fs-6">
+            <div class="col-12 col-md-6">
+                <table class="text-center justify-content-center align-items-center table table-hover border shadow fs-6">
                     <tr>
                         <td>Jumlah Stok</td>
-                        <td><input class="form-control" required type="number" name="jumlah_stok" value="" placeholder="Masukkan jumlah stok..."></td>
+                        <td><input class="form-control" required type="number" name="jumlah_stok" value=""
+                                placeholder="Masukkan jumlah stok..."></td>
                     </tr>
                     <tr>
                         <td>Type Stok</td>
@@ -50,18 +47,23 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="end"><a href="/dashboard/material-data" class="btn btn-secondary"><i
-                                    class="fa-solid fa-arrow-left"></i><span class="d-none d-md-inline"> Back</span>
-                                </a></td>
-                        <td align="start">
+                        <td>Keterangan</td>
+                        <td><input class="form-control" type="text" name="keterangan" value=""
+                            placeholder="Keterangan (Optional)"></td>
+                    </tr>
+                    <tr>
+                        <td align="end"><a href="/dashboard/material-data" class="btn btn-secondary d-none d-md-inline"><i
+                                    class="fa-solid fa-arrow-left"></i><span> Back</span>
+                            </a></td>
+                        <td align="end">
                             <button type="submit" class="btn text-white" style="background-color: #1CC88A">Submit</button>
                         </td>
                     </tr>
                 </table>
             </div>
-            <div class="col-6 ">
+            <div class="col-12 col-md-6">
                 <table
-                    class="text-center justify-content-center align-items-center table table-hover border shadow table-responsive-sm fs-6"
+                    class="text-center justify-content-center align-items-center table table-hover border shadow fs-6"
                     style="background-color: white;">
                     <tr>
                         <td>Total Stok Masuk</td>
@@ -81,7 +83,7 @@
                     style="background-color: white">
                     <thead class="table text-white" style="background-color: #1CC88A">
                         <td>No</td>
-                        <td>No Stok</td>
+                        <td>Material</td>
                         <td>Jumlah In</td>
                         <td>Nama</td>
                         <td>Tanggal</td>
@@ -91,7 +93,7 @@
                             <td class="align-middle">{{ $loop->iteration }}</td>
                             <td class="align-middle">{{ $material->no_material }}</td>
                             <td class="align-middle">{{ $stokIn->jumlah_stok }}</td>
-                            <td class="align-middle">{{ $stokIn->user->name }}</td>
+                            <td class="align-middle">{{ $stokIn->user_name }}</td>
                             <td class="align-middle">
                                 {{ \Carbon\Carbon::parse($stokIn->created_at_update)->translatedFormat('d F Y, H:i') }}
                             </td>
@@ -106,7 +108,7 @@
                     style="background-color: white">
                     <thead class="table text-white" style="background-color: #1CC88A">
                         <td>No</td>
-                        <td>No Stok</td>
+                        <td>Material</td>
                         <td>Jumlah Out</td>
                         <td>Nama</td>
                         <td>Tanggal</td>
@@ -116,7 +118,7 @@
                             <td class="align-middle">{{ $loop->iteration }}</td>
                             <td class="align-middle">{{ $material->no_material }}</td>
                             <td class="align-middle">{{ $stokOut->jumlah_stok }}</td>
-                            <td class="align-middle">{{ $stokOut->user->name }}</td>
+                            <td class="align-middle">{{ $stokOut->user_name }}</td>
                             <td class="align-middle">
                                 {{ \Carbon\Carbon::parse($stokOut->created_at_update)->translatedFormat('d F Y, H:i') }}
                             </td>

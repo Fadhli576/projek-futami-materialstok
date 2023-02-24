@@ -16,13 +16,14 @@ return new class extends Migration
         Schema::create('materials', function (Blueprint $table) {
             $table->id();
             $table->string('no_material');
-            $table->string('nama');            
-            $table->string('alat_ukur');
-            $table->string('tempat_penyimpanan');
-            $table->string('jumlah')->nullable();
-            $table->string('deskripsi');
-            $table->string('user_id');
-
+            $table->string('nama');         
+            $table->string('jumlah')->nullable(); 
+            $table->string('satuan_id');  
+            $table->string('lokasi')->nullable(); 
+            $table->string('user_id')->nullable();
+            $table->string('deskripsi')->nullable();
+           
+            
             $table->timestamps();
         });
     }

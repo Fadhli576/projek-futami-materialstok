@@ -2,25 +2,31 @@
 
 @section('content')
     {{-- Form Pengisian Material Baru --}}
-    @if (Auth::user()->role_id !== 1)
+    @if (Auth::user()->role_id !== '1')
         <div class="card p-3 mb-5 shadow">
             <h5>Form Material</h5>
             <form class="row" action="{{ route('dashboard.store') }}" method="POST">
                 @csrf
                 <div class="col-md-6 col-sm-12">
-                    <label for="">Nomor Material</label>
-                    <input placeholder="Nomor Material" class="form-control" type="text" name="no_material" id="">
-                    <label for="">Nama Material</label>
-                    <input placeholder="Nama" class="form-control" type="text" name="nama" id="">
-                    <label for="">Alat Ukur (Satuan)</label>
-                    <input placeholder="Alat Ukur" class="form-control" type="text" name="alat_ukur" id="">
+                    <label for="">Material</label>
+                    <input placeholder="Material" class="form-control" type="number" name="no_material"
+                        id="">
+                    <label for="">Material Description</label>
+                    <input placeholder="Description" class="form-control" type="text" name="nama" id="">
+                    <label for="">BUn</label>
+                    <select name="satuan_id" id="" class="form-select">
+                        <option value="" selected disabled>Pilih</option>
+                        @foreach ($satuan as $satuan)
+                            <option value="{{ $satuan->id }}">{{ $satuan->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="col-md-6 col-sm-12">
-                    <label for="">Tempat Penyimpanan</label>
-                    <input placeholder="Tempat Penyimpanan" class="form-control" type="text" name="tempat_penyimpanan"
+                    <label for="">Lokasi Rak</label>
+                    <input placeholder="Lokasi Rak" class="form-control" type="text" name="lokasi"
                         id="">
                     <label for="">Deskripsi</label>
-                    <input placeholder="Deskripsi" class="form-control" type="text" name="deskripsi" id="">
+                    <input placeholder="Deskripsi (Optional)" class="form-control" type="text" name="deskripsi" id="">
                 </div>
                 <div class="col-12 mt-2">
                     <button class="btn text-white" style="background-color: #1CC88A">Submit</button>
@@ -29,10 +35,14 @@
             </form>
         </div>
     @endif
-    @if (Auth::user()->role_id !== 1)
+    {{ $materials->links('pagination::bootstrap-4') }}
+    @if (Auth::user()->role_id !== '1')
         <div class="my-3 text-end">
-            <a class="btn btn-success" href="{{ route('material-export') }}"><i class="fa-regular fa-file-excel"></i> Export
-                data</a>
+            <a class="btn btn-success" href="{{ route('update-stok-export') }}"><i class="fa-regular fa-file-excel"></i>
+                Export Out Data</a>
+
+            <a class="btn btn-success" href="{{ route('material-export') }}"><i class="fa-regular fa-file-excel"></i>
+                Export Material data</a>
 
             <a class="btn btn-warning text-white" href="{{ route('print-material') }}"><i class="fa-solid fa-print"></i>
                 Print</a>
@@ -44,44 +54,65 @@
         style="background-color: white">
         <thead class="table text-white" style="background-color: #1CC88A">
             <td>No</td>
-            <td>No Stok</td>
-            <td>Nama</td>
-            <td class="d-none d-md-table-cell">Alat Ukur</td>
-            <td>Jumlah</td>
-            <td>Tempat</td>
+            <td>Material</td>
+            <td>Material Description</td>
+            <td class="d-none d-md-table-cell">BUn</td>
+            <td>Unrestricted</td>
+            <td>Lokasi Rak</td>
             <td class="d-none d-md-table-cell">Deskripsi</td>
             <td>QR</td>
-            <td>Action</td>
+            <td style="width: 100px">Aksi</td>
         </thead>
         @forelse ($materials as $material)
             <tr class="justify-content-center align-self-center">
-                <td class="align-middle">{{ $loop->iteration }}</td>
+                <td class="align-middle">{{ $material->id }}</td>
                 <td class="align-middle">{{ $material->no_material }}</td>
                 <td class="align-middle">{{ $material->nama }}</td>
-                <td class="align-middle d-none d-md-table-cell">{{ $material->alat_ukur }}</td>
+                <td class="align-middle d-none d-md-table-cell">
+
+                    {{ $material->satuan->name }}</td>
                 <td class="align-middle">
                     {{ $material->jumlah == null ? 'Kosong' : $material->jumlah }}
                 </td>
-                <td class="align-middle">{{ $material->tempat_penyimpanan }}</td>
-                <td class="align-middle d-none d-md-table-cell">{{ $material->deskripsi }}</td>
-                <td class="align-middle"><img src="data:image/png;base64, {!! base64_encode(
-                    QrCode::format('png')->size(100)->generate($material->no_material),
-                ) !!}" alt=""></td>
+                <td class="align-middle">{{ $material->lokasi == null ? 'Kosong' : $material->lokasi }}</td>
+                <td class="align-middle d-none d-md-table-cell">
+                    {{ $material->deskripsi == null ? 'Kosong' : $material->deskripsi }}</td>
+                <td class="align-middle">{!! QrCode::size(40)->generate($material->no_material) !!}</td>
                 <td class="align-middle">
-                    <form action="{{ route('delete-material', $material->id) }}" method="POST">
-                        @csrf
-                        <a href="{{ route('search-material', $material->no_material) }}" class="btn text-white"
-                            style="background-color:#1CC88A">Lihat</a>
+                    <a href="{{ route('search-material', $material->no_material) }}" class="btn text-white mb-2"
+                        style="background-color:#1CC88A">Lihat</a>
 
-                        <a href="{{ route('update-stok', $material->no_material) }}" class="btn btn-primary">Stok
-                        </a>
+                    <a href="{{ route('update-stok', $material->no_material) }}" class="btn btn-primary mb-2">Stok
+                    </a>
 
-                        @if (Auth::user()->role_id !== 1)
-                            @method('DELETE')
-                            <button class="btn btn-danger" type="submit">Hapus</button>
-                        @endif
-
-                    </form>
+                    @if (Auth::user()->role_id !== '1')
+                        <button class="btn btn-danger" type="button" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">Hapus</button>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Hapus Data</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Apakah anda yakin akan menghapus data ini?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <form action="{{ route('delete-material', $material->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">Hapus</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 </td>
             </tr>
         @empty
@@ -89,5 +120,5 @@
         @endforelse
     </table>
 
-    {{-- {{ $materials->links('pagination::bootstrap-4') }} --}}
+    {{ $materials->links('pagination::bootstrap-4') }}
 @endsection

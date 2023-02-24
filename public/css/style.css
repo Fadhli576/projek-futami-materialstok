@@ -792,25 +792,3 @@ section {
 .about .content p:last-child {
   margin-bottom: 0;
 }
-
-#footer .copyright {
-  text-align: center;
-  float: left;
-}
-
-#footer .credits {
-  float: right;
-  text-align: center;
-  font-size: 13px;
-  color: #444444;
-}
-
-@media (max-width: 768px) {
-
-  #footer .copyright,
-  #footer .credits {
-    float: none;
-    text-align: center;
-    padding: 2px 0;
-  }
-}

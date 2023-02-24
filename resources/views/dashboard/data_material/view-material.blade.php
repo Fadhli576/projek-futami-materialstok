@@ -11,44 +11,45 @@
         </div>
     @else
         <div class="card p-3 mb-5 shadow border border-0">
-            <h5>Update Material</h5>
+            <h5><a href="/dashboard/material-data" class="btn d-md-none"><i class="fa-solid fa-arrow-left"></i>
+                </a>Update Material</h5>
             <form class="row" action="{{ route('update-material', $material->no_material) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="col-12 col-md-6">
                     <div class="bg-warning p-3 shadow text-white mb-4" style="border-radius: 12px">
-                        <label class="fs-2" for="">Jumlah</label>
+                        <label class="fs-2" for="">Unrestricted</label>
                         <input class="form-control mb-5" {{ Auth::user()->role_id == 1 ? 'readonly' : '' }} type="number"
                             name="{{ Auth::user()->role_id == 1 ? 'jumlah_stok' : 'jumlah' }}" id=""
                             value="{{ $material->jumlah }}">
                     </div>
 
-                    <label for="">Nomor Material</label>
+                    <label for="">Material</label>
                     <input class="form-control" type="number" name="no_material" id=""
                         value="{{ $material->no_material }}" {{ Auth::user()->role_id == 1 ? 'readonly' : '' }}>
                 </div>
                 <div class="col-12 col-md-6">
-                    <label for="">Nama Material</label>
+                    <label for="">Material Description</label>
                     <input class="form-control" type="text" name="nama" id="" value="{{ $material->nama }}"
-                        {{ Auth::user()->role_id == 1 ? 'readonly' : '' }}>
-                    <label for="">Alat Ukur</label>
+                        {{ Auth::user()->role_id == '1' ? 'readonly' : '' }}>
+                    <label for="">BUn</label>
                     <input class="form-control" type="text" name="alat_ukur" id=""
-                        value="{{ $material->alat_ukur }}" {{ Auth::user()->role_id == 1 ? 'readonly' : '' }}>
-                    <label for="">Tempat Penyimpanan</label>
+                        value="{{ $material->satuan->name }}" {{ Auth::user()->role_id == '1' ? 'readonly' : '' }}>
+                    <label for="">Lokasi Rak</label>
                     <input class="form-control" type="text" name="tempat_penyimpanan" id=""
-                        value="{{ $material->tempat_penyimpanan }}" {{ Auth::user()->role_id == 1 ? 'readonly' : '' }}>
+                        value="{{ $material->lokasi }}" {{ Auth::user()->role_id == '1' ? 'readonly' : '' }}>
                     <label for="">Deskripsi</label>
                     <input class="form-control" type="text" name="deskripsi" id=""
-                        value="{{ $material->deskripsi }}" {{ Auth::user()->role_id == 1 ? 'readonly' : '' }}>
+                        value="{{ $material->deskripsi }}" {{ Auth::user()->role_id == '1' ? 'readonly' : '' }}>
                 </div>
                 <div class="col-12 mt-2">
-                    <a href="/dashboard/material-data" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i>
+                    <a href="/dashboard/material-data" class="btn btn-secondary d-none d-md-inline"><i class="fa-solid fa-arrow-left"></i>
                         Back</a>
-                    @if (Auth::user()->role_id !== 1)
+                    @if (Auth::user()->role_id !== '1')
                         <button class="btn text-white" style="background-color: #1CC88A">Submit</button>
                     @endif
 
-                    <p class="text-end fs-6" style="border-radius: 12px">Nama Pembuat : {{ $material->user->name }}</p>
+                    <span class="p-2 px-4 fs-6 float-right text-white" style="border-radius: 8px; background-color:#1CC88A">{{ $material->user_id == null ? 'Data Kosong' : $material->nama_user }}</span>
                 </div>
 
             </form>
