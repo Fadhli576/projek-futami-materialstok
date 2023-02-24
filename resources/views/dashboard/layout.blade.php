@@ -49,7 +49,7 @@
                 <li class="nav-item {{ request()->is('dashboard/stok-langsung') ? 'active' : '' }}">
                     <a class="nav-link" href="/dashboard/stok-langsung">
                         <i class="fa-solid fa-robot"></i>
-                        <span>Scan Auto Data</span></a>
+                        <span>Data Auto Scan</span></a>
                 </li>
             @endif
 
@@ -131,7 +131,7 @@
                                         <i class="fa-solid fa-magnifying-glass"></i>
                                     </button>
                                 </div>
-                                <a class="btn btn-danger d-none d-md-inline" href="/dashboard">RESET</a>
+                                <a class="btn btn-danger d-none d-md-inline" href="/dashboard/material-data">RESET</a>
                             </div>
                         </form>
                     @elseif(request()->is('dashboard/user-data'))
@@ -145,7 +145,7 @@
                                         <i class="fa-solid fa-magnifying-glass"></i>
                                     </button>
                                 </div>
-                                <a class="btn btn-danger" href="/dashboard">RESET</a>
+                                <a class="btn btn-danger" href="/dashboard/user-data">RESET</a>
                             </div>
                         </form>
                     @elseif(request()->is('dashboard/stok-langsung'))
@@ -160,7 +160,7 @@
                                 </div>
                                 <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
                             </div>
-                            <a class="btn btn-danger mx-2 d-none d-md-inline" href="/dashboard">RESET</a>
+                            <a class="btn btn-danger mx-2 d-none d-md-inline" href="/dashboard/stok-langsung">RESET</a>
                         </form>
                     @elseif(request()->is('dashboard'))
                         @if (Auth::user()->role_id !== '1')

@@ -164,7 +164,7 @@ class MaterialController extends Controller
         //                      ->get();
 
         $stokIn = V_material::where('status','in');
-        $stokOut = V_material::where([['status','out'],['metode_scan','manual']]);
+        $stokOut = V_material::where('status','out');
 
         if ($request->has('tanggal_awal') && $request->has('tanggal_selesai')) {
             $tanggal_awal = Carbon::parse($request->tanggal_awal)->toDateTimeString();
@@ -341,7 +341,7 @@ class MaterialController extends Controller
         ]);
 
 
-        toast('Berhasil memperbaharui material!','success');
+        toast('Berhasil mengurangi stok!','success');
         return redirect('/dashboard/scan-langsung'); 
     }
 

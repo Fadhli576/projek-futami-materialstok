@@ -30,10 +30,7 @@
                             <td class="align-middle">
                                 {{ \Carbon\Carbon::parse($stokIn->created_at)->translatedFormat('d F Y, H:i') }}
                             </td>
-                            <td>
-                                <input type="text" class="form-control" name="keterangan"
-                                    value="{{ $stokIn->keterangan }}">
-                            </td>
+                            <td class="align-middle">{{ $stokIn->keterangan }}</td>
                         </tr>
                     @empty
                         <td colspan="7">Belum ada data</td>
@@ -62,10 +59,7 @@
                             <td class="align-middle">
                                 {{ \Carbon\Carbon::parse($stokOut->created_at)->translatedFormat('d F Y, H:i') }}
                             </td>
-                            <td>
-                                <input type="text" class="form-control" name="keterangan"
-                                    value="{{ $stokOut->keterangan }}">
-                            </td>
+                            <td class="align-middle">{{ $stokOut->keterangan }}</td>
                         </tr>
                     @empty
                         <td colspan="7">Belum ada data</td>

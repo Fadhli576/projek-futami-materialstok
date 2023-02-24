@@ -98,11 +98,17 @@ class UpdateStokController extends Controller
 
         $request->validate([
             'jumlah_stok' => 'required',
+            'keterangan'=>'required'
         ]);
+
+        $jumlah_stok = $request->jumlah_stok;
+        if ($request->konversi == 'G') {
+            $jumlah_stok =  $request->jumlah_stok / 1000;
+        }
 
         UpdateStok::create([
             'stok_id'=>$materiala->id,
-            'jumlah_stok'=>$request->jumlah_stok,
+            'jumlah_stok'=>$jumlah_stok,
             'user_id'=>Auth::user()->id,
             'status'=>$request->status,
             'keterangan'=>$request->keterangan,
