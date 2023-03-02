@@ -67,7 +67,8 @@
     <section id="hero" class="d-flex align-items-center justify-content-center" style="background-color: #DFE8CC">
         <div class="row mx-4" data-aos="zoom-out" data-aos-delay="100">
             <div class="col-md-6 col-sm-12 align-self-center">
-                <h1>Welcome to <span>Futami</span></h1>
+                <h1>Welcome to</h1>
+                <h1><span>Engineering Futami Apps</span></h1>
             </div>
             <div class="col-md-6 col-sm-12 align-self-center">
                 <img src="assets/img/qrcodeppl.png" class="img-fluid" alt="">
