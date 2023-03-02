@@ -28,6 +28,9 @@
                     <option {{ $user->role->id == 2 ? 'selected' : ''}} value="2">Admin</option>
                     <option {{ $user->role->id == 3 ? 'selected' : ''}} value="3">Super Admin</option>
                 </select>
+                <label for="">Password</label>
+                <input value="{{ $user->password }}" placeholder="Password" class="form-control" type="password" name="password"
+                    id="">
             </div>
             <div class="col-12 mt-2">
                 <a href="/dashboard/user-data" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> Back</a>

@@ -6,6 +6,7 @@ use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UpdateStokController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,6 +58,13 @@ Route::middleware('Login')->group(function () {
     Route::post('/dashboard/scan-langsung/post', [MaterialController::class, 'scanLangsung'])->name('scan-langsung');
 
     Route::get('/dashboard/scan-manual', [MaterialController::class, 'scanManualView'])->name('scan-manual-view');
+
+    Route::get('/dashboard/profile', [UserController::class, 'index'])->name('profile-index');
+    Route::put('/dashboard/update-profile', [UserController::class, 'update'])->name('update-profile');
+
+    Route::get('/dashboard/edit-password', [UserController::class, 'edit'])->name('edit-password');
+    Route::put('/dashboard/update-password', [UserController::class, 'passwordUpdate'])->name('update-password');
+
 });
 
 Route::middleware(['Login', 'checkRole:super admin,admin'])->group(function () {
@@ -74,8 +82,9 @@ Route::middleware(['Login', 'checkRole:super admin,admin'])->group(function () {
     Route::delete('/dashboard/delete-satuan/{satuan}', [SatuanController::class, 'destroy'])->name('satuan-delete');
 
     Route::put('/dashboard/tambah-keterangan/{id}', [MaterialController::class, 'tambahKeterangan'])->name('tambah-keterangan');
-
 });
+
+
 
 
 

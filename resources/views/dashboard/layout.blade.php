@@ -28,8 +28,8 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion d-md-inline-block" id="sidebar"
-            style="display: none">
+        <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion {{ request()->is('dashboard/profile') || request()->is('dashboard/profile/password-verify') || request()->is('dashboard/edit-password') ? 'd-none' : 'd-md-inline-block' }}" id="sidebar"
+            style="display:none">
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center my-3" href="/">
                 <img src="{{ asset('assets/img/futamilogo.png') }}" class="img-fluid" alt="">
@@ -112,7 +112,7 @@
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand topbar mb-4 static-top shadow" style="background-color:#F2F6EB">
 
-                    <label for="pilih"><i class="fas fa-bars mx-3 d-md-none"></i></label>
+                    <label for="pilih"><i class="fas fa-bars mx-3 {{ request()->is('dashboard/profile') || request()->is('dashboard/profile/password-verify') || request()->is('dashboard/edit-password') ? 'd-none' : 'd-md-none' }}"></i></label>
                     <input class="fa fa-bars" style="display: none" type="checkbox" checked role=""
                         id="pilih" onchange="sidebar()">
 
@@ -195,6 +195,9 @@
                                         <li><span
                                                 class="dropdown-item d-md-none text-white">{{ Auth::user()->name }}</span>
                                         </li>
+                                        <li><a class="dropdown-item text-white" href="/dashboard/profile"><i
+                                            class="fa-solid fa-user me-2"></i><span>Profile</span>
+                                    </a></li>
                                         <li><a class="dropdown-item text-white" href="/"><i
                                                     class="fa-solid fa-house me-2"></i><span>Home</span> </a></li>
                                         <li><a class="dropdown-item text-white" href="/logout"><i
