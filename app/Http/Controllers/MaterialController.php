@@ -45,7 +45,7 @@ class MaterialController extends Controller
      */
     public function create()
     {
-        
+
     }
 
     /**
@@ -57,19 +57,12 @@ class MaterialController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'no_material' => 'required',
             'nama'=>'required',
-            'satuan_id' => 'required',
-            'lokasi' => 'required',
         ],[
             'no_material.required' => 'no_material harus diisi',
             'nama'=>'required',
             'satuan_id.required' => 'alat_ukur harus diisi',
-            'lokasi.required' => 'category harus diisi',
         ]);
-
-       
-        
 
 
         Material::create([
@@ -83,7 +76,7 @@ class MaterialController extends Controller
 
         toast('Berhasil membuat material!','success');
         return redirect('/dashboard/material-data');
-        
+
     }
 
     /**
@@ -127,7 +120,7 @@ class MaterialController extends Controller
                 'tempat_penyimpanan' => 'required',
                 'deskripsi' => 'required',
             ]);
-    
+
             $material->update([
                 'no_material' => $request->no_material,
                 'nama' => $request->nama,
@@ -181,7 +174,7 @@ class MaterialController extends Controller
         // ->orderBy('update_stoks.created_at','DESC')
         // ->get();
         // dd($stokIn->all());
-        
+
         // $stokOut =  UpdateStok::join('materials','update_stoks.stok_id','=','materials.id')
         //                         ->where('status','out')
         //                         ->select('update_stoks.id as update_stok_id','update_stoks.stok_id as stok_id','update_stoks.jumlah_stok as jumlah_stok','update_stoks.user_id as user_id','update_stoks.status as status','update_stoks.created_at as created_at_update','materials.*')
@@ -218,7 +211,7 @@ class MaterialController extends Controller
     public function indexUser()
     {
         $users = User::latest()->filter(request(['search']))->paginate(20);
-        
+
         return view('dashboard.data_user.index', ['users'=>$users]);
     }
 
@@ -239,7 +232,7 @@ class MaterialController extends Controller
         User::create($user);
         toast('Berhasil menembahkan User!','success');
         return redirect('/dashboard/user-data');
-        
+
     }
 
     public function editUser($id)
@@ -309,7 +302,7 @@ class MaterialController extends Controller
 
     public function printMaterial()
     {
-        $materials = Material::all();
+        $materials = Material::get();
         return view('print', compact('materials'));
     }
 
@@ -321,7 +314,7 @@ class MaterialController extends Controller
     {
 
         $material = Material::where('no_material',$request->no_material)->first();
-        
+
         UpdateStok::create([
             'stok_id'=>$material->id,
             'jumlah_stok'=>1,
@@ -329,7 +322,7 @@ class MaterialController extends Controller
             'status'=>'out',
             'metode_scan'=>'langsung',
             'tanggal_scan'=> Carbon::now()->format('Y-m-d')
-        ]); 
+        ]);
 
         $stokKeluar =  UpdateStok::join('materials','update_stoks.stok_id','=','materials.id')
         ->where([['no_material', $material->no_material],['status','out']])
@@ -342,7 +335,7 @@ class MaterialController extends Controller
 
 
         toast('Berhasil mengurangi stok!','success');
-        return redirect('/dashboard/scan-langsung'); 
+        return redirect('/dashboard/scan-langsung');
     }
 
     public function scanManualView()

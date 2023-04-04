@@ -34,7 +34,7 @@
                         {{ Auth::user()->role_id == '1' ? 'readonly' : '' }}>
                     <label for="">BUn</label>
                     <input class="form-control" type="text" name="alat_ukur" id=""
-                        value="{{ $material->satuan->name }}" {{ Auth::user()->role_id == '1' ? 'readonly' : '' }}>
+                        value="{{ $material->satuan_id == null ? '' : $material->satuan->name }}" {{ Auth::user()->role_id == '1' ? 'readonly' : '' }}>
                     <label for="">Lokasi Rak</label>
                     <input class="form-control" type="text" name="tempat_penyimpanan" id=""
                         value="{{ $material->lokasi }}" {{ Auth::user()->role_id == '1' ? 'readonly' : '' }}>

@@ -20,8 +20,8 @@
                 <td class="align-middle">{{ $material->id }}</td>
                 <td class="align-middle">{{ $material->no_material }}</td>
                 <td class="align-middle">{{ $material->nama }}</td>
-                <td class="align-middle">{{ $material->satuan->name }}</td>
-                <td class="align-middle">{{ $material->jumlah }}</td>
+                <td class="align-middle">{{ $material->satuan_id == null ? 'Kosong' : $material->satuan->name }}</td>
+                <td class="align-middle">{{ $material->jumlah == null ? 'Kosong' : $material->jumlah}}</td>
                 <td class="align-middle">{{ $material->lokasi == null ? 'Kosong' : $material->lokasi }}</td>
                 <td class="align-middle">{{ $material->deskripsi == null ? 'Kosong' : $material->deskripsi }}</td>
             </tr>
@@ -32,7 +32,7 @@
             @method('PUT')
             <div class="col-12 col-md-6">
                 <table class="text-center justify-content-center align-items-center table table-hover border shadow fs-6">
-                    @if ($material->satuan->name == 'KG')
+                    @if ($material->satuan_id == null ? false : $material->satuan->name == 'KG')
                         <tr>
                             <td>Type Satuan</td>
                             <td><select required name="konversi" id="" class="form-select">

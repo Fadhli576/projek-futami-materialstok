@@ -70,14 +70,14 @@
                 <td class="align-middle">{{ $material->nama }}</td>
                 <td class="align-middle d-none d-md-table-cell">
 
-                    {{ $material->satuan->name }}</td>
+                    {{ $material->satuan_id == null ? 'Kosong' : $material->satuan->name }}</td>
                 <td class="align-middle">
                     {{ $material->jumlah == null ? 'Kosong' : $material->jumlah }}
                 </td>
                 <td class="align-middle">{{ $material->lokasi == null ? 'Kosong' : $material->lokasi }}</td>
                 <td class="align-middle d-none d-md-table-cell">
                     {{ $material->deskripsi == null ? 'Kosong' : $material->deskripsi }}</td>
-                <td class="align-middle">{!! QrCode::size(40)->generate($material->no_material) !!}</td>
+                <td class="align-middle">{!!   $material->no_material == null ? 'Kosong' : QrCode::size(40)->generate($material->no_material) !!}</td>
                 <td class="align-middle">
                     <a href="{{ route('search-material', $material->no_material) }}" class="btn text-white mb-2"
                         style="background-color:#1CC88A">Lihat</a>

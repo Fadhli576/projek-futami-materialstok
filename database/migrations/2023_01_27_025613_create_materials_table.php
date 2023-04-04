@@ -15,15 +15,15 @@ return new class extends Migration
     {
         Schema::create('materials', function (Blueprint $table) {
             $table->id();
-            $table->string('no_material');
-            $table->string('nama');         
-            $table->string('jumlah')->nullable(); 
-            $table->string('satuan_id');  
-            $table->string('lokasi')->nullable(); 
+            $table->string('no_material')->nullable();
+            $table->string('nama');
+            $table->string('jumlah')->nullable();
+            $table->string('satuan_id')->nullable();
+            $table->string('lokasi')->nullable();
             $table->string('user_id')->nullable();
             $table->string('deskripsi')->nullable();
-           
-            
+
+
             $table->timestamps();
         });
     }
